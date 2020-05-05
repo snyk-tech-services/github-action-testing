@@ -9,6 +9,6 @@ jobs:
         steps:
             - name: Testing
               id: snyk-job
-              uses: snyk-tech-services/github-action-testing
+              uses: snyk-tech-services/github-action-testing@master
               with:
                 myToken: ${{ secrets.ghToken }}
