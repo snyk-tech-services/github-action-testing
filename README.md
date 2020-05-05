@@ -2,7 +2,6 @@
 
 Add Circle + Snyk badges here
 
-Working on this. again.
 
 ## Usage
 
