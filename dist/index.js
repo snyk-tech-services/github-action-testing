@@ -2,19 +2,21 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const github = require('@actions/github');
 const core = require('@actions/core');
-const waitForCompletedStatus = async (octokit, org, repo, branch, suiteId) => {
-    const interval = setInterval(async () => {
-        let suite = await octokit.checks.getSuite({
-            owner: org,
-            repo: repo,
-            check_suite_id: suiteId,
-        });
-        console.log(suite);
-        if (suite.data.status == 'completed') {
-            clearInterval(interval);
-            return suite.data.status;
-        }
-    }, 10000);
+const waitForCompletedStatus = (octokit, org, repo, branch, suiteId) => {
+    return new Promise((resolve, reject) => {
+        const interval = setInterval(async () => {
+            let suite = await octokit.checks.getSuite({
+                owner: org,
+                repo: repo,
+                check_suite_id: suiteId,
+            });
+            console.log(suite.data.status);
+            if (suite.data.status == 'completed') {
+                clearInterval(interval);
+                resolve(suite.data.status);
+            }
+        }, 10000);
+    });
 };
 async function runAction() {
     // This should be a token with access to your repository scoped in as a secret.

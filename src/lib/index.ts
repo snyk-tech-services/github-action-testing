@@ -2,20 +2,22 @@ const github = require('@actions/github')
 const core = require('@actions/core')
 
 
-const waitForCompletedStatus = async (octokit: any, org: any, repo: any, branch: any, suiteId: number) => {
+const waitForCompletedStatus = (octokit: any, org: any, repo: any, branch: any, suiteId: number) => {
+    return new Promise((resolve,reject) => {
+        const interval = setInterval(async () => {
+            let suite = await octokit.checks.getSuite({
+                owner: org,
+                repo: repo,
+                check_suite_id: suiteId,
+            });
+            console.log(suite.data.status)
+            if(suite.data.status == 'completed'){
+                clearInterval(interval)
+                resolve(suite.data.status)
+            }
+        }, 10000)
+    })
     
-    const interval = setInterval(async () => {
-        let suite = await octokit.checks.getSuite({
-            owner: org,
-            repo: repo,
-            check_suite_id: suiteId,
-        });
-        console.log(suite)
-        if(suite.data.status == 'completed'){
-            clearInterval(interval)
-            return suite.data.status
-        }
-    }, 10000)
     
 }
 
