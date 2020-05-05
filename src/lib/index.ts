@@ -54,6 +54,7 @@ async function runAction() {
             throw new Error('Could not find check suite to wait for completion')
         }
         let status = await watchForCompletedStatus(octokit, ORGANIZATION,REPO, BRANCH, suiteId)
+        console.log(status)
         console.log('done')
 
 
