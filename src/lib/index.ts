@@ -2,15 +2,21 @@ const github = require('@actions/github')
 const core = require('@actions/core')
 
 
-const watchForCompletedStatus = async (octokit: any, org: any, repo: any, branch: any, suiteId: number) => {
+const waitForCompletedStatus = async (octokit: any, org: any, repo: any, branch: any, suiteId: number) => {
     
-    let suite = await octokit.checks.getSuite({
-        owner: org,
-        repo: repo,
-        check_suite_id: suiteId,
-    });
-    console.log(suite)
-    return suite.data.status
+    const interval = setInterval(async () => {
+        let suite = await octokit.checks.getSuite({
+            owner: org,
+            repo: repo,
+            check_suite_id: suiteId,
+        });
+        console.log(suite)
+        if(suite.data.status == 'completed'){
+            clearInterval(interval)
+            return suite.data.status
+        }
+    }, 10000)
+    
 }
 
 async function runAction() {
@@ -53,7 +59,7 @@ async function runAction() {
         if(suiteId == 0){
             throw new Error('Could not find check suite to wait for completion')
         }
-        let status = await watchForCompletedStatus(octokit, ORGANIZATION,REPO, BRANCH, suiteId)
+        let status = await waitForCompletedStatus(octokit, ORGANIZATION,REPO, BRANCH, suiteId)
         console.log(status)
         console.log('done')
 
