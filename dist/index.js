@@ -11,15 +11,22 @@ async function runAction() {
         const ghToken = core.getInput('myToken');
         // const snykFixBranchPattern = core.getInput('branchPattern')
         const payload = github.context.payload;
-        // const ORGANIZATION = payload.organization.login
-        // const REPO = payload.pull_request.base.repo.name
-        // const BRANCH = payload.pull_request.head.ref
-        // const DIFFURL = payload.pull_request.diff_url
+        const ORGANIZATION = payload.organization.login;
+        const REPO = payload.pull_request.base.repo.name;
+        const BRANCH = payload.pull_request.head.ref;
+        const DIFFURL = payload.pull_request.diff_url;
         //`https://patch-diff.githubusercontent.com/raw/mtyates/puppet_webapp/pull/3.diff`
         // if(BRANCH.startsWith(snykFixBranchPattern)) {    
         //     // DO Whatever
         // }
         console.log(payload);
+        const octokit = new github.GitHub(ghToken);
+        const suites = octokit.checks.listSuitesForRef({
+            ORGANIZATION,
+            REPO,
+            BRANCH
+        });
+        console.log(suites);
     }
     catch (err) {
         console.log(err);
