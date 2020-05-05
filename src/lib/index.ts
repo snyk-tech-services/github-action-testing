@@ -4,6 +4,7 @@ const core = require('@actions/core')
 
 const waitForCompletedStatus = (octokit: any, org: any, repo: any, branch: any, suiteId: number) => {
     return new Promise((resolve,reject) => {
+        console.time()
         const interval = setInterval(async () => {
             let suite = await octokit.checks.getSuite({
                 owner: org,
@@ -13,6 +14,7 @@ const waitForCompletedStatus = (octokit: any, org: any, repo: any, branch: any, 
             console.log(suite.data.status)
             if(suite.data.status == 'completed'){
                 clearInterval(interval)
+                console.timeEnd()
                 resolve(suite.data.status)
             }
         }, 10000)
