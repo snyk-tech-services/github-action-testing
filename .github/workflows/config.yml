@@ -2,13 +2,13 @@ on:
     pull_request:
         types: [opened]
   
-  jobs:
+jobs:
     snyk_fix_propagate:
-      runs-on: ubuntu-latest
-      name: Snyk testing stuff
-      steps:
-      - name: Testing
+        runs-on: ubuntu-latest
+        name: Snyk testing stuff
+        steps:
+        - name: Testing
         id: snyk-job
         uses: github.com/snyk-tech-services/github-action-testing
         with:
-          myToken: ${{ secrets.ghToken }}
+            myToken: ${{ secrets.ghToken }}
