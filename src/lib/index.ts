@@ -35,7 +35,9 @@ async function runAction() {
             repo: REPO,
             ref: BRANCH
         });
-        console.log(suites)
+        suites.data.check_suites.forEach(suite => {
+            console.log(suite)
+        })
 
 
     } catch(err) {
