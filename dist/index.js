@@ -8,7 +8,8 @@ const watchForCompletedStatus = async (octokit, org, repo, branch, suiteId) => {
         repo: repo,
         check_suite_id: suiteId,
     });
-    return suite.status;
+    console.log(suite);
+    return suite.data.status;
 };
 async function runAction() {
     // This should be a token with access to your repository scoped in as a secret.

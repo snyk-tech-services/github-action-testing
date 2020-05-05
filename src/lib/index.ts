@@ -9,8 +9,8 @@ const watchForCompletedStatus = async (octokit: any, org: any, repo: any, branch
         repo: repo,
         check_suite_id: suiteId,
     });
-
-    return suite.status
+    console.log(suite)
+    return suite.data.status
 }
 
 async function runAction() {
