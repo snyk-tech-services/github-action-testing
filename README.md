@@ -2,11 +2,7 @@
 
 Add Circle + Snyk badges here
 
-Let's make our lives easier.
-Basic github action action.yml pointing to dist/index.js file that typescript compiles from src/lib/index.ts.
-Inputs from action configuration are specified in action.yml and consumed in the index file.
-Rest is programmatically obtained/retrieved via the github action payload.
-
+Working on this.
 
 ## Usage
 
