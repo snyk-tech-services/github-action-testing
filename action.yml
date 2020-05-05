@@ -1,0 +1,15 @@
+name: 'Snyk Github Actions'
+description: 'Boilerplate action for Snyk Tech Services'
+inputs:
+  myToken:
+    description: 'GH token'
+    required: true
+    default: ''
+#   branchPattern:
+#     description: 'Branch pattern for which this logic should kick in'
+#     required: false
+#     default: 'snyk-fix-'
+outputs:
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
