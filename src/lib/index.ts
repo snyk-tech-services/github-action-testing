@@ -31,9 +31,9 @@ async function runAction() {
         console.log(BRANCH)
 
         const suites = await octokit.checks.listSuitesForRef({
-            ORGANIZATION,
-            REPO,
-            BRANCH
+            owner: ORGANIZATION,
+            repo: REPO,
+            ref: BRANCH
         });
         console.log(suites)
 
