@@ -1,6 +1,6 @@
 on: 
     pull_request:
-        types: [opened]
+        types: [opened,reopened]
   
 jobs:
     snyk_fix_propagate:
@@ -9,6 +9,6 @@ jobs:
         steps:
             - name: Testing
               id: snyk-job
-              uses: github.com/snyk-tech-services/github-action-testing
+              uses: snyk-tech-services/github-action-testing
               with:
                 myToken: ${{ secrets.ghToken }}
