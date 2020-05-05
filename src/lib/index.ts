@@ -24,10 +24,13 @@ async function runAction() {
         // if(BRANCH.startsWith(snykFixBranchPattern)) {    
         //     // DO Whatever
         // }
-        console.log(payload)
+        //console.log(payload)
         const octokit = new github.GitHub(ghToken);
+        console.log(ORGANIZATION)
+        console.log(REPO)
+        console.log(BRANCH)
 
-        const suites = octokit.checks.listSuitesForRef({
+        const suites = await octokit.checks.listSuitesForRef({
             ORGANIZATION,
             REPO,
             BRANCH
