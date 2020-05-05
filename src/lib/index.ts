@@ -2,7 +2,16 @@ const github = require('@actions/github')
 const core = require('@actions/core')
 
 
+const watchForCompletedStatus = async (octokit: any, org: any, repo: any, branch: any, suiteId: number) => {
+    
+    let suite = await octokit.checks.getSuite({
+        owner: org,
+        repo: repo,
+        check_suite_id: suiteId,
+    });
 
+    return suite.status
+}
 
 async function runAction() {
     // This should be a token with access to your repository scoped in as a secret.
@@ -35,9 +44,17 @@ async function runAction() {
             repo: REPO,
             ref: BRANCH
         });
+        let suiteId = 0
         suites.data.check_suites.forEach(suite => {
-            console.log(suite)
+            if(suite.app.slug == 'circleci-checks'){
+                suiteId = suite.id
+            }
         })
+        if(suiteId == 0){
+            throw new Error('Could not find check suite to wait for completion')
+        }
+        let status = await watchForCompletedStatus(octokit, ORGANIZATION,REPO, BRANCH, suiteId)
+        console.log('done')
 
 
     } catch(err) {

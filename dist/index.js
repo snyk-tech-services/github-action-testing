@@ -2,6 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const github = require('@actions/github');
 const core = require('@actions/core');
+const watchForCompletedStatus = async (octokit, org, repo, branch, suiteId) => {
+    let suite = await octokit.checks.getSuite({
+        owner: org,
+        repo: repo,
+        check_suite_id: suiteId,
+    });
+    return suite.status;
+};
 async function runAction() {
     // This should be a token with access to your repository scoped in as a secret.
     // The YML workflow will need to set myToken with the GitHub Secret Token
@@ -29,9 +37,17 @@ async function runAction() {
             repo: REPO,
             ref: BRANCH
         });
+        let suiteId = 0;
         suites.data.check_suites.forEach(suite => {
-            console.log(suite);
+            if (suite.app.slug == 'circleci-checks') {
+                suiteId = suite.id;
+            }
         });
+        if (suiteId == 0) {
+            throw new Error('Could not find check suite to wait for completion');
+        }
+        let status = await watchForCompletedStatus(octokit, ORGANIZATION, REPO, BRANCH, suiteId);
+        console.log('done');
     }
     catch (err) {
         console.log(err);
